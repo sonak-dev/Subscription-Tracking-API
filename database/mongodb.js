@@ -13,7 +13,7 @@ const connectToDatabase = async () => {
     }catch(error){
         console.error('Error connecting to database: ', error);
 
-        process.exit(1);c
+        process.exit(1);
     }
 }
 
