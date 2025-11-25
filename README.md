@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Image" width="100%" alt="Project Banner"/>
+  <img src="https://github.com/sonak-dev/Subscription-Tracking-API/blob/main/ChatGPT%20Image%20Nov%2026%2C%202025%2C%2012_24_05%20AM.png" width="100%" alt="Project Banner"/>
 </p>
 
 <h1 align="center">📦 Subscription Tracking API</h1>
