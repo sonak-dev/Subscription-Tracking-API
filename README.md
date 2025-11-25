@@ -1,35 +1,88 @@
-# Subscription Tracking API
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sonak-dev/Subscription-Tracking-API/main/banner.png" width="100%" alt="Project Banner"/>
+</p>
 
-Subscription Tracking API is a production-ready backend service built using Node.js, Express.js, and MongoDB designed to help users manage, organize, and track all their subscriptions from a single place. It includes secure user authentication using JWT, modular routes, clean controller-based logic, and a scalable database schema. The goal of this project is to provide a real-world backend architecture that is simple to understand, easy to extend, and clean enough to showcase as a professional portfolio project.
+<h1 align="center">📦 Subscription Tracking API</h1>
 
-This API allows users to register, log in, and manage their subscription details including name, amount, renewal dates, category, and status. The route structure is fully protected using middleware, ensuring that only authenticated users can access their data. Every part of the system—from routing to database models—follows a professional, maintainable folder structure inspired by industry standards.
+<p align="center">
+  A modern, clean and production-ready backend system to manage and track all your subscriptions efficiently.<br>
+  Built with ❤️ using <b>Node.js</b>, <b>Express.js</b> and <b>MongoDB</b>.
+</p>
 
-To get started, clone the repository using:
+---
+
+## 🌟 Overview
+
+Subscription Tracking API is a fully functional backend designed to help users manage, organize, and track all their subscriptions in one place.  
+It uses **JWT authentication**, **secure middleware**, **MongoDB database**, and a **clean modular structure**, making it ideal for portfolios, real-world projects, and scalable production systems.
+
+The API lets users register, log in, add subscriptions, edit them, delete them, and fetch subscription lists — all protected via secure authentication.
+
+---
+
+## 🔥 Features
+
+- 🔐 **JWT Authentication** for secure access  
+- 📄 **CRUD operations** for subscriptions  
+- 🛡 **Protected routes** using middleware  
+- 🗂 **Organized folder structure (MVC inspired)**  
+- ⚡ Fast, scalable, and production-ready  
+- 🌱 Easy to extend with AI, analytics, notifications, etc.  
+
+---
+
+## ⚙️ Getting Started
+
+### 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/sonak-dev/Subscription-Tracking-API.git
 cd Subscription-Tracking-API
-Install all dependencies:
+```
+
+### 2️⃣ Install Dependencies
+```bash
 npm install
-Create an .env file in the root folder and add:
+```
+
+### 3️⃣ Create a `.env` file
+```
 PORT=5000
 MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_jwt_secret
-Now start the server:
+```
+
+### 4️⃣ Start the Server
+```bash
 npm start
-The API will run on http://localhost:5000.
+```
 
-Available endpoints include:
-POST /api/auth/register – Registers a new user  
-POST /api/auth/login – Logs in and returns a JWT token  
-GET /api/subscriptions – Retrieves all subscriptions for the logged-in user  
-POST /api/subscriptions – Creates a new subscription  
-GET /api/subscriptions/:id – Fetches details of a subscription by ID  
-PUT /api/subscriptions/:id – Updates a subscription  
-DELETE /api/subscriptions/:id – Deletes a subscription  
+👉 API now runs at: **http://localhost:5000**
 
-All protected routes require the Authorization header:
+---
+
+## 🔗 API Endpoints
+
+```
+POST    /api/auth/register        → Register a new user
+POST    /api/auth/login           → Login and receive token
+
+GET     /api/subscriptions        → Get all subscriptions
+POST    /api/subscriptions        → Create subscription
+GET     /api/subscriptions/:id    → Get subscription by ID
+PUT     /api/subscriptions/:id    → Update subscription
+DELETE  /api/subscriptions/:id    → Delete subscription
+```
+
+🔒 **Protected routes require header:**
+```
 Authorization: Bearer <token>
+```
 
-Example of a valid request body when creating a subscription:
+---
+
+## 📄 Example Subscription JSON
+
+```json
 {
   "name": "Spotify",
   "amount": 199,
@@ -37,15 +90,41 @@ Example of a valid request body when creating a subscription:
   "category": "Music",
   "status": "active"
 }
+```
 
-This backend is built with scalability and future improvements in mind. Potential upcoming enhancements include automated renewal reminders email, an analytics dashboard for tracking monthly spending.
+---
 
-About the Developer:  
-My name is **Sonak**, a backend-focused developer passionate about building practical systems using Node.js, Express, MongoDB, and clean coding principles. I also work with C++ and DSA to strengthen my problem-solving foundations. I enjoy writing modular, maintainable code and building real-world projects that improve my skills and showcase what I am capable of.  
-“Keep trying not for achievement, but to showcase your capabilities and to show what you are capable of.”
+## 🚀 Future Enhancements
 
-GitHub: https://github.com/sonak-dev  
-LinkedIn: https://www.linkedin.com/in/sonak-jha7692  
-Email: codingmastery8833@gmail.com
+- 🔔 Email & SMS renewal reminders  
+- 📊 Analytics dashboard for monthly spending  
+- 🤖 AI-based anomaly detection  
+- 📱 React/Next.js frontend  
+- 🐳 Docker container support  
+- 🧪 Tests (Jest / Supertest)  
 
-This project is open-source and licensed under the MIT License. Feel free to use, modify, or improve it with proper credit. A ⭐ star on GitHub is always appreciated.
+---
+
+## 👨‍💻 About the Developer
+
+Hey! I’m **Sonak** 👋  
+A backend-focused developer passionate about Node.js, Express, MongoDB, and writing clean, maintainable, real-world code.  
+I am also improving my logic with **C++ & DSA**, and I enjoy building projects that actually solve problems.
+
+💬 *“Keep trying not for achievement, but to showcase your capabilities and to show what you are capable of.”*
+
+---
+
+## 🌐 Connect With Me
+
+- GitHub: https://github.com/sonak-dev  
+- LinkedIn: https://www.linkedin.com/in/sonak-jha7692  
+- Email: codingmastery8833@gmail.com  
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+Feel free to use, modify, and improve it with proper credit.  
+⭐ If you like this project, a star on GitHub means a lot!
