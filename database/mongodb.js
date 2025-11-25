@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 import { DB_URI, NODE_ENV } from "../config/env.js";
 
-if(!DB_URI){
-    throw new Error('please define the MongoDB_URI environment Variable inside .env<development / production>.local');
+if (!DB_URI) {
+    throw new Error('please define the DB_URI environment variable');
 }
-
 
 const connectToDatabase = async () => {
     try{
@@ -13,9 +12,8 @@ const connectToDatabase = async () => {
     }catch(error){
         console.error('Error connecting to database: ', error);
 
-        process.exit(1);c
+        process.exit(1);
     }
-}
-
+};
 
 export default connectToDatabase;
