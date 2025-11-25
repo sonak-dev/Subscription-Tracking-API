@@ -16,8 +16,5 @@ const connectToDatabase = async () => {
     }
 };
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 3a55cbee6320fd8db13573bed2c9f63dbf69f3e8
 export default connectToDatabase;
