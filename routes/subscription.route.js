@@ -31,7 +31,7 @@ subscriptionRouter.delete(`/:id`,authorize, deleteSubscription);
 subscriptionRouter.get(`/user/:id`, authorize, getUserSubscription);
 
 
-subscriptionRouter.put(`/:id/cancle`, (req, res) => res.send({title: 'CANCEL subscription'}));
+subscriptionRouter.put(`/:id/cancel`, (req, res) => res.send({title: 'CANCEL subscription'}));
 
 
 subscriptionRouter.get(`/upcoming-renewals`, (req, res) => res.send({title: 'GET upcoming renewals'}));

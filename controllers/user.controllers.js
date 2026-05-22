@@ -7,7 +7,7 @@ import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
 export const getUsers = async (req, res, next) => {
 
     try{
-        const users = await User.find();
+        const users = await User.find().select('-password');
 
         res.status(200).json({
             success: true,

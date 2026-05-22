@@ -84,7 +84,7 @@ subscriptionSchema.pre("save", function(next){
             daily: 1,
             weekly: 7,
             monthly: 30,
-            yearly: 356
+            yearly: 365
         }
 
         this.renewalDate = new Date(this.startDate);
