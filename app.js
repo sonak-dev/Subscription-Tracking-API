@@ -19,7 +19,6 @@ import connectToDatabase from "./database/mongodb.js";
 
 // 🔹 Import custom global error handler
 import errorMiddleware from "./middleware/error.middleware.js";
-import arcjet from "@arcjet/node";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
 
 
