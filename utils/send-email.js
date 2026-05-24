@@ -1,6 +1,7 @@
 import { emailTemplates } from './email-template.js'
 import dayjs from 'dayjs'
 import transporter, { accountEmail } from '../config/nodemailer.js'
+import { SERVER_URL } from '../config/env.js';
 
 export const sendReminderEmail = async ({ to, type, subscription }) => {
   if(!to || !type) throw new Error('Missing required parameters');
@@ -16,6 +17,8 @@ export const sendReminderEmail = async ({ to, type, subscription }) => {
     planName: subscription.name,
     price: `${subscription.currency} ${subscription.price} (${subscription.frequency})`,
     paymentMethod: subscription.paymentMethod,
+    accountSettingsLink: `${SERVER_URL}/account/settings`,
+    supportLink: `${SERVER_URL}/support`
   }
 
   const message = template.generateBody(mailInfo);
