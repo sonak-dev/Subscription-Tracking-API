@@ -54,7 +54,8 @@ export const createSubscription = async (req, res, next) => {
     // Step 1: Check if user already has an active subscription
     const existingSub = await Subscription.findOne({
       user: req.user._id,
-      status: "active", // assuming you have a 'status' field
+      name: req.body.name,
+      status: "active",
     });
 
     if (existingSub) {
