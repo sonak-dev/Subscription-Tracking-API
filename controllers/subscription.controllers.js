@@ -71,13 +71,19 @@ export const createSubscription = async (req, res, next) => {
          user: req.user._id,
       });
 
-      // Step 3: Trigger workflow
-      const { workflowRunId } = await workflowClient.trigger({
-         url: `${SERVER_URL}/api/v1/workflows/subscription/reminder`,
-         body: { subscriptionId: subscription.id },
-         headers: { "Content-Type": "application/json" },
-         retries: 0,
-      });
+      // Step 3: Trigger workflow (safely catch errors if QStash/SERVER_URL is unconfigured)
+      let workflowRunId = null;
+      try {
+         const triggerRes = await workflowClient.trigger({
+            url: `${SERVER_URL || 'http://localhost:5500'}/api/v1/workflows/subscription/reminder`,
+            body: { subscriptionId: subscription.id },
+            headers: { "Content-Type": "application/json" },
+            retries: 0,
+         });
+         workflowRunId = triggerRes.workflowRunId;
+      } catch (wfError) {
+         console.error("Workflow trigger error:", wfError.message);
+      }
 
       // Step 4: Send response
       res.status(201).json({
@@ -87,6 +93,7 @@ export const createSubscription = async (req, res, next) => {
    } catch (error) {
       next(error);
    }
+
 
 };
 
