@@ -7,72 +7,75 @@ import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env.js";
 
 
 export const signUp = async (req, res, next) => {
-    // Implement sign up logic here
-    const session = await mongoose.startSession();
-    session.startTransaction();
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+        const error = new Error('Please provide all required fields: name, email, and password.');
+        error.statusCode = 400;
+        return next(error);
+    }
 
     try {
-        // Logic to create a new user
-        const { name, email, password } = req.body;
-
-        // Check if all required fields are provided (name, email, password).
-        // If any field is missing, throw a 400 Bad Request error.
-        if (!name || !email || !password) {
-            const error = new Error('Please provide all required fields: name, email, and password.');
-            error.statusCode = 400; // 400 for a bad request
-            throw error;
-        }
-
-        // check if user already exists
         const existingUser = await User.findOne({ email });
 
-        if(existingUser){
+        if (existingUser) {
             const error = new Error('User already exists');
             error.statusCode = 409;
             throw error;
         }
 
-        // Hash password
-        // Step 1: Generate a salt (random string for extra security)
         const salt = await bcrypt.genSalt(10);
-
-        // Step 2: Hash the password with the salt
-        // Step 3: Save this hashed password in database (not plain password)
         const hashPassword = await bcrypt.hash(password, salt);
 
+        let newUser;
+        let session = null;
 
-        const newUsers = await User.create([{
-            name,
-            email,
-            password: hashPassword
-        }], { session } );
+        try {
+            session = await mongoose.startSession();
+            session.startTransaction();
 
-        
+            const newUsers = await User.create([{
+                name,
+                email,
+                password: hashPassword
+            }], { session });
+
+            newUser = newUsers[0];
+            await session.commitTransaction();
+            session.endSession();
+        } catch (txError) {
+            if (session) {
+                await session.abortTransaction();
+                session.endSession();
+            }
+            // Fallback for standalone MongoDB instances without replica set support
+            newUser = await User.create({
+                name,
+                email,
+                password: hashPassword
+            });
+        }
+
         const token = jwt.sign(
-            {userId: newUsers[0]._id},
+            { userId: newUser._id },
             JWT_SECRET,
-            {expiresIn: JWT_EXPIRES_IN}
+            { expiresIn: JWT_EXPIRES_IN || '7d' }
         );
-
-        await session.commitTransaction();
-        session.endSession();
 
         res.status(201).json({
             success: true,
             message: 'User created successfully',
             data: {
                 token,
-                user: newUsers[0]
+                user: newUser
             }
         });
 
     } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
         next(error);
     }
-
 }
+
 
 
 export const signIn = async (req, res, next) => {
