@@ -6,7 +6,9 @@ import {
     createSubscription,
     getUserSubscription,
     updateSubscription,
-    deleteSubscription
+    deleteSubscription,
+    cancelSubscription,
+    getUpcomingRenewals
 } from "../controllers/subscription.controllers.js";
 
 
@@ -14,6 +16,10 @@ const subscriptionRouter = Router();
 
 
 subscriptionRouter.get(`/`, getSubscriptions);
+
+
+// 🔹 Static routes must come BEFORE dynamic parameter routes (/:id) to prevent route shadowing
+subscriptionRouter.get(`/upcoming-renewals`, authorize, getUpcomingRenewals);
 
 
 subscriptionRouter.get(`/:id`, getSubscription);
@@ -25,18 +31,13 @@ subscriptionRouter.post(`/`, authorize, createSubscription);
 subscriptionRouter.put(`/:id`, authorize, updateSubscription);
 
 
-subscriptionRouter.delete(`/:id`,authorize, deleteSubscription);
+subscriptionRouter.put(`/:id/cancel`, authorize, cancelSubscription);
+
+
+subscriptionRouter.delete(`/:id`, authorize, deleteSubscription);
 
 
 subscriptionRouter.get(`/user/:id`, authorize, getUserSubscription);
-
-
-subscriptionRouter.put(`/:id/cancel`, (req, res) => res.send({title: 'CANCEL subscription'}));
-
-
-subscriptionRouter.get(`/upcoming-renewals`, (req, res) => res.send({title: 'GET upcoming renewals'}));
-
-
 
 
 export default subscriptionRouter;
