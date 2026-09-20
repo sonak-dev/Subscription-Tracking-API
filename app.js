@@ -1,5 +1,10 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import { createRequire } from "module";
+
+// 🔹 swagger-ui-express is CommonJS — use createRequire in ESM context
+const require = createRequire(import.meta.url);
+const swaggerUi = require("swagger-ui-express");
 
 
 // 🔹 Load environment variables (e.g., PORT) from centralized config
@@ -22,15 +27,28 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
 
 
+// 🔹 Import Swagger specification
+import swaggerSpec from "./config/swagger.js";
+
+
 
 // Initialize Express application
 const app = express();
 
 
+// 🔹 Swagger UI — available at /api-docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+   customSiteTitle: "Subscription Tracker API Docs",
+   swaggerOptions: {
+      persistAuthorization: true,
+   },
+}));
+
+
 app.use(
-  "/api/v1/workflows",
-  express.raw({ type: "*/*" }),
-  workflowRouter
+   "/api/v1/workflows",
+   express.raw({ type: "*/*" }),
+   workflowRouter
 );
 
 
@@ -58,7 +76,7 @@ app.use(errorMiddleware);
 
 // 🔹 Default root route (health check / welcome route)
 app.get(`/`, (req, res) => {
-    res.send(`Welcome to the Subscription Tracker API!`);
+   res.send(`Welcome to the Subscription Tracker API!`);
 })
 
 
@@ -68,9 +86,9 @@ app.get(`/`, (req, res) => {
  *  - Establish MongoDB connection on startup
  */
 app.listen(PORT, async () => {
-    console.log(`Subscription Tracker API is running on http://localhost:${PORT}`);
+   console.log(`Subscription Tracker API is running on http://localhost:${PORT}`);
 
-    await connectToDatabase();
+   await connectToDatabase();
 })
 
 
