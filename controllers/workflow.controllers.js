@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import dayjs from 'dayjs';
+=======
+import dayjs from 'dayjs'
+>>>>>>> 6385dd779f7d0d00a30ed5e405febce4f949fad1
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { serve } = require("@upstash/workflow/express");
 import Subscription from '../models/subscription.model.js';
 import { sendReminderEmail } from '../utils/send-email.js';
+
 
 
 const REMINDERS = [7, 5, 2, 1]

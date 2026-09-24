@@ -25,6 +25,7 @@ import connectToDatabase from "./database/mongodb.js";
 // 🔹 Import custom global error handler
 import errorMiddleware from "./middleware/error.middleware.js";
 import arcjetMiddleware from "./middleware/arcjet.middleware.js";
+import { setupSwagger } from "./config/swagger.js";
 
 
 // 🔹 Import Swagger specification
@@ -68,6 +69,10 @@ app.use(arcjetMiddleware);
 app.use(`/api/v1/auth`, authRouter);
 app.use(`/api/v1/users`, userRouter);
 app.use(`/api/v1/subscriptions`, subscriptionRouter);
+
+
+// 🔹 Swagger API Documentation
+setupSwagger(app);
 
 
 // 🔹 Global error-handling middleware (must be last middleware)
