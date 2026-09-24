@@ -19,11 +19,13 @@ const subscriptionRouter = Router();
  * @swagger
  * /api/v1/subscriptions:
  *   get:
- *     summary: Get all subscriptions
+ *     summary: Get all subscriptions of the logged-in user
  *     tags: [Subscriptions]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of all subscriptions
+ *         description: List of the authenticated user's subscriptions
  *         content:
  *           application/json:
  *             schema:
@@ -36,8 +38,10 @@ const subscriptionRouter = Router();
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/Subscription'
+ *       401:
+ *         description: Unauthorized - missing or invalid token
  */
-subscriptionRouter.get(`/`, getSubscriptions);
+subscriptionRouter.get(`/`, authorize, getSubscriptions);
 
 
 /**
@@ -78,8 +82,10 @@ subscriptionRouter.get(`/upcoming-renewals`, authorize, getUpcomingRenewals);
  * @swagger
  * /api/v1/subscriptions/{id}:
  *   get:
- *     summary: Get a specific subscription by ID
+ *     summary: Get a specific subscription by ID (owner only)
  *     tags: [Subscriptions]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -101,6 +107,18 @@ subscriptionRouter.get(`/upcoming-renewals`, authorize, getUpcomingRenewals);
  *                   example: true
  *                 data:
  *                   $ref: '#/components/schemas/Subscription'
+ *       401:
+ *         description: Unauthorized — JWT token missing or invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       403:
+ *         description: Forbidden — you do not own this subscription
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Subscription not found
  *         content:
@@ -108,7 +126,7 @@ subscriptionRouter.get(`/upcoming-renewals`, authorize, getUpcomingRenewals);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-subscriptionRouter.get(`/:id`, getSubscription);
+subscriptionRouter.get(`/:id`, authorize, getSubscription);
 
 
 /**

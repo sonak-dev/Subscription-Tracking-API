@@ -8,7 +8,7 @@ export const getSubscriptions = async (req, res, next) => {
 
    try{
 
-      const subscriptions = await Subscription.find();
+      const subscriptions = await Subscription.find({ user: req.user._id });  // ✅ sirf apna data
 
       res.status(200).json({
          success: true,
@@ -32,6 +32,13 @@ export const getSubscription = async (req, res, next) => {
       if(!subscription){
          const error = new Error('Subscription not found');
          error.statusCode = 404;
+         throw error;
+      }
+
+      // ✅ Ownership check add kiya
+      if(subscription.user.toString() !== req.user._id.toString()){
+         const error = new Error('You are not authorized to view this subscription');
+         error.statusCode = 403;
          throw error;
       }
 
