@@ -5,41 +5,44 @@ import { JWT_SECRET } from "../config/env.js";
 
 
 // Someone is making a request get user details -> authorize middle -> verify -> if valid -> next -> get user details
-const authorize = async (req, res, next) => {
+export const authorize = async (req, res, next) => {
 
-    try{
-        let token;
+   try {
+      let token;
 
-        if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
-            token = req.headers.authorization.split(" ")[1];
-        }
+      if (req.cookies.token) {
+         token = req.cookies.token;
+      }
 
-        if(!token) return res.status(401).json({
+      if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+         token = req.headers.authorization.split(" ")[1];
+      }
+
+      if (!token) {
+         return res.status(401).json({
             message: 'Unauthorized'
-        });
+         });
+      }
 
-        const decoded = jwt.verify(token, JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_SECRET);
 
-        const user = await User.findById(decoded.userId);
+      const user = await User.findById(decoded.userId);
 
-        if(!user){
-            return res.status(401).json({
-                message: "Unauthorized - No token provided"
-            });
-        }
+      if (!user) {
+         return res.status(401).json({
+            message: "Unauthorized - User not found"
+         });
+      }
 
-        req.user = user;
+      req.user = user;
 
-        next();
+      next();
 
-    }catch(error){
-        res.status(401).json({
-            message: 'Unauthorized',
-            error: error.message
-        })
-    }
+   } catch (error) {
+      res.status(401).json({
+         message: 'Unauthorized',
+         error: error.message
+      })
+   }
 
 }
-
-
-export default authorize;
